@@ -6,7 +6,7 @@ To use this project you will need to add your Digitalocean and Discord token to 
 You also need to install  [Python](https://www.python.org/downloads/) if you dont have it. 
 If you do have it, update it to version 3.10 or above!
 
-To run it, type py main.py in your terminal if you are on Windows. On Linux you need to type in python3 main.py
+To run it, type __py main.py__ in your terminal if you are on Windows. On Linux you need to type in __python3 main.py__.
 # Issues
 This project is incomplete and new functions are worked on. If you have any suggestions or encounter any problems please let me know!
 # Contributions
