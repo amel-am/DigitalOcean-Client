@@ -7,6 +7,10 @@ class DigitalOceanClient(object):
     self._headers = {'Content-Type': 'application/json','Authorization': f'Bearer {ocean_token}'}
     self._api_url = "https://api.digitalocean.com/v2/"
     self._ratelimit = ""
+  
+  @property
+  def ratelimit(self):
+    return self._ratelimit
     
   async def _request(self,method:str, link:str) -> dict:
       async with ClientSession() as session:
