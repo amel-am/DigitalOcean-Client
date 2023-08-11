@@ -24,7 +24,7 @@ class DigitalOceanEmbed():
         for k,v in dict_.items():
             if isinstance(v,(list,dict)):
                 continue
-            match k,v:
+            match k:
                 case "fingerprint":
                    await self._cat(k,v,1,"```")
                 case  "vpc_uuid":
