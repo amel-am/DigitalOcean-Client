@@ -1,0 +1,4 @@
+discord_token:       # Input the Discord token of your bot here
+ocean_token:         # Input the DigitalOcean token of your bot here
+slash_guilds: []     # Add the guild id of the server you want the slash commands to be in, eg. [92439085463700687]
+# Note: If you want to register the slash commands in multiple guilds separate the ids in the list with a comma, eg. [92439085463700687,91827106746060800]
