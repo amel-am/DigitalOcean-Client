@@ -10,7 +10,6 @@ class DigitalOceanEmbed():
         self.embed.set_image("https://doimages.nyc3.digitaloceanspaces.com/Droplet,Social,Blog,Email.png")
     
     async def _cat(self,k: str,v: str,n: int = 1,marks: str = None):
-        self.embed.description = ""
         lines = "\n" * n
         if marks != None:
             self.embed.description += f"{k}:{marks}{v}{marks}{lines}" 
@@ -23,16 +22,17 @@ class DigitalOceanEmbed():
             
     async def _dict_loop(self,dict_:dict):
         for k,v in dict_.items():
-            if isinstance(v,list) or isinstance(v,dict):
+            if isinstance(v,(list,dict)):
                 continue
-            elif k == "fingerprint":
-                await self._cat(k,v,1,"```")
-            elif k == "vpc_uuid":
-                await self._cat(k,v,2)
-            elif k == "email":
-                continue
-            else:
-                await self._cat(k,v)
+            match k,v:
+                case "fingerprint":
+                   await self._cat(k,v,1,"```")
+                case  "vpc_uuid":
+                    await self._cat(k,v,2)
+                case "email":
+                    continue
+                case _:
+                    await self._cat(k,v)
                     
     async def _list_loop(self,list_:list):
         for e in list_:
@@ -48,6 +48,7 @@ class DigitalOceanEmbed():
                     
     async def embed_creation(self,option:str):
         self.embed.title = f"{option} info"
+        self.embed.description = ""
         match option:
             case "ssh":
                 await self._ssh_emb()
