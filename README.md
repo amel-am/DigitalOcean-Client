@@ -1,5 +1,5 @@
 # Welcome to the Digitalocean Client Repo
-I'm happy to welcome you to this project. It makes use of the Digitalocean and Discord API to deliver you the info of your Digitalocean
+I'm happy to welcome you to this repo. It makes use of the Digitalocean and Discord API to deliver you the info of your Digitalocean
 droplets and more!
 # Usage
 To use this project you will need to add your Digitalocean and Discord token to the corresponding keys in the yaml.
