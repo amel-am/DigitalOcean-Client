@@ -5,6 +5,7 @@ from src.ocean_client import DigitalOceanClient
 #This class is used to make the digitalocean embed
 class DigitalOceanEmbed():
     def __init__(self,option:str):
+        print("test")
         self._option = option
         self._ocean_client = DigitalOceanClient()
         self._embed = disnake.Embed(title=f"{option} info",description="",color=disnake.Color.blue())
