@@ -4,13 +4,14 @@ from src.ocean_client import DigitalOceanClient
 
 #This class is used to make the digitalocean embed
 class DigitalOceanEmbed():
-    def __init__(self):
+    def __init__(self,option:str):
+        self._option = option
         self._ocean_client = DigitalOceanClient()
-        self._embed = disnake.Embed(title="",description="",color=disnake.Color.blue())
+        self._embed = disnake.Embed(title=f"{option} info",description="",color=disnake.Color.blue())
         self._embed.set_image("https://doimages.nyc3.digitaloceanspaces.com/Droplet,Social,Blog,Email.png")
     
     @property
-    def embed(self):
+    def get_embed(self):
         return self._embed
     
     async def _cat(self,k: str,v: str,n: int = 1,marks: str = None) -> None:
@@ -50,17 +51,12 @@ class DigitalOceanEmbed():
         ssh_info = await self._ocean_client.get_keys()
         await self._list_loop(ssh_info)
                     
-    async def creation(self,option:str) -> None: 
-        self._embed.title = f"{option} info"
-        self._embed.description = ""
-        match option:
+    async def creation(self) -> None: 
+        match self._option:
             case "ssh":
                 await self._ssh_emb()
             case "account":
                 await self._acc_emb()
             case "droplets":
                 await self._droplets_emb()
-        self._embed.remove_footer()
         self._embed.set_footer(text=self._ocean_client.ratelimit)
-
-                
