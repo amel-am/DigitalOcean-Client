@@ -37,7 +37,7 @@ class DigitalOceanEmbed():
                 case "email":
                     continue
                 case _:
-                    if v == None:
+                    if v == "":
                         await self._cat(k,"None")
                     else:
                         await self._cat(k,v)
