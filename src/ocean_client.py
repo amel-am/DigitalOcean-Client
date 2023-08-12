@@ -15,6 +15,8 @@ class DigitalOceanClient(object):
   async def _request(self,method:str, link:str) -> dict:
       async with ClientSession() as session:
           async with session.request(method=method,url=link,headers=self._headers) as response:
+            if response.status != 200:
+              return print(f"Something went wrong, status code is: {response.status}")
             await self._set_ratelimits(response.headers)
             return await response.json()
           
