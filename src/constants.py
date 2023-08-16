@@ -1,8 +1,10 @@
-from enum import Enum
+from enum import StrEnum
 
-class RequestMethods(Enum):
+class RequestMethods(StrEnum):
     GET = "GET"
     POST = "POST"
     PUT = "PUT"
     PATCH = "PATCH"
     DELETE = "DELETE"
+    
+        
