@@ -7,7 +7,7 @@ class DiscordCommands(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self._bot = bot
 
-    @commands.slash_command(dm_permission=True, name="digitalocean", description="Info of your digitalocean components")
+    @commands.slash_command(name="digitalocean", description="Info of your digitalocean components")
     async def ocean_info(self, interaction: ApplicationCommandInteraction, option: str = commands.Param(choices=["ssh", "droplets", "account"])):
         ocean_embed = DigitalOceanEmbed(option)
         await ocean_embed.creation()
