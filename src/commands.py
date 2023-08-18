@@ -1,4 +1,4 @@
-from disnake import ApplicationCommandInteraction
+from disnake import ApplicationCommandInteraction, ActivityType
 from disnake.ext import commands
 from src.ocean_embed import DigitalOceanEmbed
 
