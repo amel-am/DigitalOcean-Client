@@ -26,7 +26,7 @@ class DigitalOceanEmbed():
 
     async def _acc_emb(self) -> None:
         account_info = await self._ocean_client.get_account()
-        await self._dict_loop(account_info)
+        self._dict_loop(account_info)
 
     def _dict_loop(self, dict_: dict) -> None:
         for k, v in dict_.items():
@@ -51,11 +51,11 @@ class DigitalOceanEmbed():
 
     async def _droplets_emb(self) -> None:
         droplets_info = await self._ocean_client.get_droplets()
-        await self._list_loop(droplets_info)
+        self._list_loop(droplets_info)
 
     async def _ssh_emb(self) -> None:
         ssh_info = await self._ocean_client.get_keys()
-        await self._list_loop(ssh_info)
+        self._list_loop(ssh_info)
 
     async def creation(self) -> None:
         match self._option:
