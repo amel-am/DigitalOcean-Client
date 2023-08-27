@@ -1,4 +1,4 @@
-from datetime import datetime
+from disnake import utils
 from aiohttp import ClientSession
 from src.yaml import ocean_token
 from src.constants import RequestMethods
@@ -9,7 +9,7 @@ class DigitalOceanClient(object):
         self._headers = {'Content-Type': 'application/json',
                          'Authorization': f'Bearer {ocean_token}'}
         self._api_url = "https://api.digitalocean.com/v2/"
-        self._ratelimit = ""
+        self._ratelimit = None
 
     @property
     def ratelimit(self):
@@ -36,6 +36,6 @@ class DigitalOceanClient(object):
         return response["account"]
 
     async def _set_ratelimits(self, dict_: dict) -> None:
-        self._ratelimit = "\n".join([f"ratelimit:{dict_['ratelimit-limit']}",
-                                     f"ratelimit-remaining:{dict_['ratelimit-remaining']}",
-                                     f"ratelimit-reset:{datetime.fromtimestamp(int(dict_['ratelimit-reset'])).strftime('%H:%M:%S')}"])
+        self._ratelimit = {"ratelimit": dict_['ratelimit-limit'],
+                           "ratelimit-remaining": dict_['ratelimit-remaining'],
+                           "ratelimit-reset": utils.format_dt(int(dict_['ratelimit-reset']))}
