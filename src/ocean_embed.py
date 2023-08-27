@@ -65,4 +65,5 @@ class DigitalOceanEmbed():
                 await self._acc_emb()
             case "droplets":
                 await self._droplets_emb()
-        self._dict_loop(self._ocean_client.ratelimit)
+        self._embed.set_footer(text=self._ocean_client.ratelimit)
+        self._embed.timestamp = self._ocean_client._ratelimit_time
