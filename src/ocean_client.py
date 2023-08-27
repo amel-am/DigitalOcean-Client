@@ -42,7 +42,7 @@ class DigitalOceanClient(object):
 
     async def _set_ratelimits(self, dict_: dict) -> None:
         self._ratelimit_time = datetime.fromtimestamp(
-            int(dict_['ratelimit-reset']))
+            float(dict_['ratelimit-reset']))
         self._ratelimit_result = self._ratelimit_result.join([f"ratelimit: {dict_['ratelimit-limit']}",
                                                               f"ratelimit-remaining: {dict_['ratelimit-remaining']}",
                                                               f"ratelimit-reset:"])
