@@ -20,9 +20,9 @@ class DigitalOceanEmbed():
     def _cat(self, k: str, v: str, n: int = 1, marks: str = None) -> None:
         lines = "\n" * n
         if marks != None:
-            self._embed.description += f"{k}:{marks}{v}{marks}{lines}"
+            self._embed.add_field(k, v, inline=False)
         else:
-            self._embed.description += f"{k}:{v}{lines}"
+            self._embed.add_field(k, v, inline=False)
 
     async def _acc_emb(self) -> None:
         account_info = await self._ocean_client.get_account()
@@ -36,7 +36,7 @@ class DigitalOceanEmbed():
                 case "fingerprint":
                     self._cat(k, v, 1, "```")
                 case  "vpc_uuid":
-                    self._cat(k, v, 2)
+                    self._cat(k, v)
                 case "email":
                     continue
                 case _:
@@ -65,5 +65,6 @@ class DigitalOceanEmbed():
                 await self._acc_emb()
             case "droplets":
                 await self._droplets_emb()
+
         self._embed.set_footer(text=self._ocean_client._ratelimit_result)
         self._embed.timestamp = self._ocean_client._ratelimit_time
