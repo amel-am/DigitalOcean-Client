@@ -1,4 +1,4 @@
-from disnake import ApplicationCommandInteraction, ActivityType, Activity, Status
+from disnake import ApplicationCommandInteraction, ActivityType, Activity, Status, Game
 from disnake.ext import commands
 from src.ocean_embed import DigitalOceanEmbed
 
@@ -19,6 +19,11 @@ class DiscordCommands(commands.Cog):
         await interaction.response.send_message(str(bot_latency) + "ms")
 
     @commands.slash_command(name="activity", description="Change the bot's activity")
-    async def activity(self, interaction: ApplicationCommandInteraction, status: Status, activitytype: ActivityType, activity: str):
-        await self._bot.change_presence(activity=Activity(name=activity, type=activitytype), status=status)
-        await interaction.response.send_message(f"The bot's activity was changed to {ActivityType(activitytype).name} {activity}")
+    async def activity(self, interaction: ApplicationCommandInteraction, activitytype: ActivityType, activity: str):
+        await self._bot.change_presence(activity=Activity(name=activity, type=activitytype))
+        await interaction.response.send_message(f"The bot's activity was changed to {activitytype} {activity}")
+
+    @commands.slash_command(name="status", description="Change the bot's status")
+    async def status(self, interaction: ApplicationCommandInteraction, status: Status):
+        await self._bot.change_presence(status=status)
+        await interaction.response.send_message(f"The bot's status was changed to {status}")
