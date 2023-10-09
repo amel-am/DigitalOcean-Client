@@ -45,17 +45,18 @@ class DiscordEmbedDropdown(disnake.ui.StringSelect):
         self._embed.set_image(
             "https://doimages.nyc3.digitaloceanspaces.com/Droplet,Social,Blog,Email.png")
 
-    def _unpack(self, iterable: Union[list, dict] = None, condition: dict = None, value: str = ""):
+    def _unpack(self, iterable: Union[list, dict] = None, condition: dict = {}, value: str = ""):
         if isinstance(iterable, list):
-            for e in iterable:
-                if isinstance(e, dict):
-                    value = self._unpack(e, condition, value)
-                else:
-                    value = ",".join(iterable)
+            if len(iterable) < 20:
+                for e in iterable:
+                    if isinstance(e, dict):
+                        value = self._unpack(e, condition, value)
+                    else:
+                        value += f"{e}\n"
         else:
             for k, v in iterable.items():
                 if isinstance(v, list):
-                    if v:
+                    if v and len(v) < 20:
                         value += f"***{k}***\n"
                     value = self._unpack(v, condition, value)
                 else:
@@ -82,21 +83,26 @@ class DiscordEmbedDropdown(disnake.ui.StringSelect):
         self._reassign_embed("droplet info")
         self._itemloop("droplet", droplets_info)
         for k, v in droplets_info[self._index].items():
-            if k == "networks":
-                value = self._unpack(v, {"type": "\n\n"})
-                self._embed.add_field(
-                    name="networks", value=value, inline=False)
-            elif k == "features":
-                value = self._unpack(v, {})
-                self._embed.add_field(
-                    name="features", value=value, inline=False)
-            elif k == "image":
-                value = self._unpack(v, {})
-                self._embed.add_field(
-                    name="image", value=value, inline=False)
-            else:
-                if not isinstance(v, (list, dict)):
-                    self._add_description(k, v)
+            match k:
+                case "networks":
+                    value = self._unpack(v, {"type": "\n\n"})
+                    self._embed.add_field(
+                        name="networks", value=value, inline=False)
+                case "features":
+                    value = self._unpack(v)
+                    self._embed.add_field(
+                        name="features", value=value, inline=False)
+                case "image":
+                    value = self._unpack(v)
+                    self._embed.add_field(
+                        name="image", value=value, inline=False)
+                case "region":
+                    value = self._unpack(v)
+                    self._embed.add_field(
+                        name="region", value=value, inline=False)
+                case _:
+                    if not isinstance(v, (list, dict)):
+                        self._add_description(k, v)
 
     async def _ssh_emb(self) -> None:
         ssh_info = await self._ocean_client.get_keys()
