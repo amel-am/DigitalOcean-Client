@@ -2,7 +2,7 @@ import disnake
 from .ocean_embed import DiscordEmbedDropdown
 
 
-class DropdownView(disnake.ui.View):
+class DropDownView(disnake.ui.View):
     def __init__(self, item: DiscordEmbedDropdown):
         super().__init__(timeout=None)
         self._item = item
