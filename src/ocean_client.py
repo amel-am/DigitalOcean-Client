@@ -1,7 +1,7 @@
 from datetime import datetime
 from aiohttp import ClientSession
-from src.yaml import ocean_token
-from src.constants import RequestMethods
+from .yaml import ocean_token
+from .constants import RequestMethods
 
 
 class DigitalOceanClient(object):
@@ -9,7 +9,7 @@ class DigitalOceanClient(object):
         self._headers = {"Content-Type": 'application/json',
                          "Authorization": f'Bearer {ocean_token}'}
         self._api_url = "https://api.digitalocean.com/v2/"
-        self._ratelimit_result = "\n"
+        self._ratelimit_result = ""
         self._ratelimit_time = None
 
     @property
@@ -43,6 +43,6 @@ class DigitalOceanClient(object):
     async def _set_ratelimits(self, dict_: dict) -> None:
         self._ratelimit_time = datetime.fromtimestamp(
             float(dict_['ratelimit-reset']))
-        self._ratelimit_result = self._ratelimit_result.join([f"ratelimit: {dict_['ratelimit-limit']}",
-                                                              f"ratelimit-remaining: {dict_['ratelimit-remaining']}",
-                                                              f"ratelimit-reset:"])
+        self._ratelimit_result = "\n".join([f"ratelimit: {dict_['ratelimit-limit']}",
+                                            f"ratelimit-remaining: {dict_['ratelimit-remaining']}",
+                                            f"ratelimit-reset:"])
