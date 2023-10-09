@@ -73,7 +73,8 @@ class DiscordEmbedDropdown(disnake.ui.StringSelect):
             if k == "email":
                 continue
             elif k == "team":
-                self._embed.add_field(k, f"{v}\n")
+                value = self._unpack(v)
+                self._embed.add_field(k, value)
             else:
                 self._add_description(k, v)
 
@@ -87,19 +88,19 @@ class DiscordEmbedDropdown(disnake.ui.StringSelect):
                 case "networks":
                     value = self._unpack(v, {"type": "\n\n"})
                     self._embed.add_field(
-                        name="networks", value=value, inline=False)
+                        name=k, value=value, inline=False)
                 case "features":
                     value = self._unpack(v)
                     self._embed.add_field(
-                        name="features", value=value, inline=False)
+                        name=k, value=value, inline=False)
                 case "image":
                     value = self._unpack(v)
                     self._embed.add_field(
-                        name="image", value=value, inline=False)
+                        name=k, value=value, inline=False)
                 case "region":
                     value = self._unpack(v)
                     self._embed.add_field(
-                        name="region", value=value, inline=False)
+                        name=k, value=value, inline=False)
                 case _:
                     if not isinstance(v, (list, dict)):
                         self._add_description(k, v)
