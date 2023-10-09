@@ -1,7 +1,7 @@
 from disnake import ApplicationCommandInteraction, ActivityType, Activity, Status
 from disnake.ext import commands
 from .ocean_embed import DiscordEmbedDropdown
-from .dropdown_view import DropdownView
+from .dropdown_view import DropDownView
 
 
 class DiscordCommands(commands.Cog):
@@ -12,7 +12,7 @@ class DiscordCommands(commands.Cog):
     async def ocean_info(self, interaction: ApplicationCommandInteraction, option: str = commands.Param(choices=["ssh", "droplet", "account"], description="Choose what to retrieve.")):
         ocean_embed = DiscordEmbedDropdown(option)
         await ocean_embed.creation()
-        await interaction.response.send_message(embed=ocean_embed.get_embed, view=DropdownView(ocean_embed))
+        await interaction.response.send_message(embed=ocean_embed.get_embed, view=DropDownView(ocean_embed))
 
     @commands.slash_command(name="latency", description="The bot's latency")
     async def latency(self, interaction: ApplicationCommandInteraction):
