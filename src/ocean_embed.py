@@ -19,7 +19,7 @@ class DiscordEmbedDropdown(disnake.ui.StringSelect):
         self._page_length = 1
 
     @property
-    def get_embed(self):
+    def embed(self):
         return self._embed
 
     async def callback(self, inter: disnake.MessageInteraction):
@@ -27,7 +27,7 @@ class DiscordEmbedDropdown(disnake.ui.StringSelect):
         await self.creation()
         await inter.response.edit_message(embed=self._embed)
 
-    def _itemloop(self, label=None, array: list = None):
+    def _append_option(self, label=None, array: list = None):
         for i in range(len(array)):
             self.append_option(
                 disnake.SelectOption(label=f"{label} {i + 1}: {array[i]['name']}", value=str(i)))
@@ -46,6 +46,7 @@ class DiscordEmbedDropdown(disnake.ui.StringSelect):
             "https://doimages.nyc3.digitaloceanspaces.com/Droplet,Social,Blog,Email.png")
 
     def _unpack(self, iterable: Union[list, dict] = None, condition: dict = {}, value: str = ""):
+        # call unpack method again if element is of type dict
         if isinstance(iterable, list):
             if len(iterable) < 20:
                 for e in iterable:
@@ -54,19 +55,17 @@ class DiscordEmbedDropdown(disnake.ui.StringSelect):
                     else:
                         value += f"{e}\n"
         else:
+            # call unpack method again if value of key is list
             for k, v in iterable.items():
                 if isinstance(v, list):
                     if v and len(v) < 20:
                         value += f"***{k}***\n"
                     value = self._unpack(v, condition, value)
                 else:
-                    if k in condition:
-                        value += f"{k}:{v}{condition[k]}"
-                    else:
-                        value += f"{k}:{v}\n"
+                    value += f"{k}:{v}" + condition.get(k, '\n')
         return value
 
-    async def _acc_emb(self) -> None:
+    async def _add_account(self) -> None:
         account_info = await self._ocean_client.get_account()
         self._reassign_embed("account info")
         for k, v in account_info.items():
@@ -78,11 +77,11 @@ class DiscordEmbedDropdown(disnake.ui.StringSelect):
             else:
                 self._add_description(k, v)
 
-    async def _droplets_emb(self) -> None:
+    async def _add_droplets(self) -> None:
         droplets_info = await self._ocean_client.get_droplets()
         self._page_length = len(droplets_info)
         self._reassign_embed("droplet info")
-        self._itemloop("droplet", droplets_info)
+        self._append_option("droplet", droplets_info)
         for k, v in droplets_info[self._index].items():
             match k:
                 case "networks":
@@ -105,25 +104,25 @@ class DiscordEmbedDropdown(disnake.ui.StringSelect):
                     if not isinstance(v, (list, dict)):
                         self._add_description(k, v)
 
-    async def _ssh_emb(self) -> None:
+    async def _add_ssh(self) -> None:
         ssh_info = await self._ocean_client.get_keys()
         self._page_length = len(ssh_info)
         self._reassign_embed("ssh info")
-        self._itemloop("ssh key", ssh_info)
+        self._append_option("ssh key", ssh_info)
         for k, v in ssh_info[self._index].items():
             if k == "fingerprint":
                 self._add_description(k, v, 1, "```")
             else:
                 self._add_description(k, v)
 
-    async def creation(self) -> None:
+    async def create_embed(self) -> None:
         match self._option:
             case "ssh":
-                await self._ssh_emb()
+                await self._add_ssh()
             case "account":
-                await self._acc_emb()
+                await self._add_account()
             case "droplet":
-                await self._droplets_emb()
+                await self._add_droplets()
         self._embed.set_footer(
             text=self._ocean_client._ratelimit_result)
         self._embed.timestamp = self._ocean_client._ratelimit_time
