@@ -11,8 +11,8 @@ class DiscordCommands(commands.Cog):
     @commands.slash_command(name="digitalocean", description="Info of your digitalocean components")
     async def ocean_info(self, interaction: ApplicationCommandInteraction, option: str = commands.Param(choices=["ssh", "droplet", "account"], description="Choose what to retrieve.")):
         ocean_embed = DiscordEmbedDropdown(option)
-        await ocean_embed.creation()
-        await interaction.response.send_message(embed=ocean_embed.get_embed, view=DropDownView(ocean_embed))
+        await ocean_embed.create_embed()
+        await interaction.response.send_message(embed=ocean_embed.embed, view=DropDownView(ocean_embed))
 
     @commands.slash_command(name="latency", description="The bot's latency")
     async def latency(self, interaction: ApplicationCommandInteraction):
