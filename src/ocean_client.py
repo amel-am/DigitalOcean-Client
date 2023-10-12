@@ -8,7 +8,7 @@ class DigitalOceanClient(object):
     def __init__(self):
         self._headers = {"Content-Type": 'application/json',
                          "Authorization": f'Bearer {ocean_token}'}
-        self._api_url = "https://api.digitalocean.com/v2/"
+        self._api_url = "https://api.digitalocean.com/v2"
         self._ratelimit_result = ""
         self._ratelimit_time = None
 
@@ -29,15 +29,15 @@ class DigitalOceanClient(object):
                 return await response.json()
 
     async def get_keys(self) -> list:
-        response = await self._request(RequestMethods.GET, f"{self._api_url}account/keys")
+        response = await self._request(RequestMethods.GET, f"{self._api_url}/account/keys")
         return response["ssh_keys"]
 
     async def get_droplets(self) -> list:
-        response = await self._request(RequestMethods.GET, f"{self._api_url}droplets")
+        response = await self._request(RequestMethods.GET, f"{self._api_url}/droplets")
         return response["droplets"]
 
     async def get_account(self) -> dict:
-        response = await self._request(RequestMethods.GET, f"{self._api_url}account")
+        response = await self._request(RequestMethods.GET, f"{self._api_url}/account")
         return response["account"]
 
     async def _set_ratelimits(self, dict_: dict) -> None:
