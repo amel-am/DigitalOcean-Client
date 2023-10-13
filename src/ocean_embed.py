@@ -24,7 +24,7 @@ class DiscordEmbedDropdown(disnake.ui.StringSelect):
 
     async def callback(self, inter: disnake.MessageInteraction):
         self._index = int(self.values[0])
-        await self.creation()
+        await self.create_embed()
         await inter.response.edit_message(embed=self._embed)
 
     def _append_option(self, label=None, array: list = None):
