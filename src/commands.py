@@ -2,6 +2,7 @@ from disnake import ApplicationCommandInteraction, ActivityType, Activity, Statu
 from disnake.ext import commands
 from .ocean_embed import DiscordEmbedDropdown
 from .dropdown_view import DropDownView
+from .constants import CHOICES
 
 
 class DiscordCommands(commands.Cog):
@@ -9,7 +10,7 @@ class DiscordCommands(commands.Cog):
         self._bot = bot
 
     @commands.slash_command(name="digitalocean", description="Info of your digitalocean components")
-    async def ocean_info(self, interaction: ApplicationCommandInteraction, option: str = commands.Param(choices=["ssh", "droplet", "account"], description="Choose what to retrieve.")):
+    async def ocean_info(self, interaction: ApplicationCommandInteraction, option: str = commands.Param(choices=CHOICES, description="Choose what to retrieve.")):
         ocean_embed = DiscordEmbedDropdown(option)
         await ocean_embed.create_embed()
         await interaction.response.send_message(embed=ocean_embed.embed, view=DropDownView(ocean_embed))
