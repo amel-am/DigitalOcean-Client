@@ -1,6 +1,6 @@
 # Welcome to the Digitalocean Client Repo
 I'm happy to welcome you to this repo. It makes use of the Digitalocean and Discord API to deliver you the info of your Digitalocean
-droplets and more, which will then be sent to the Discord as a Discord Embed in the channel the command was used in!
+droplets and more, which will then be sent as a Discord Embed in the channel the command was used in!
 # Usage
 To use this project you will need to add your Digitalocean and Discord token to the corresponding keys in the yaml.
 You also need to install  [Python](https://www.python.org/downloads/) if you don't have it. 
