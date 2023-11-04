@@ -81,7 +81,7 @@ class DiscordEmbedDropdown(disnake.ui.StringSelect):
         self._embed.set_footer(text=self._ocean_client._ratelimit_result)
         self._embed.timestamp = self._ocean_client._ratelimit_time
 
-    def _unpack(self, iterable: Union[list, dict] = None, condition: dict = {}, value: str = ""):
+    def _unpack_request(self, iterable: Union[list, dict] = None, condition: dict = {}, value: str = ""):
         if isinstance(iterable, list):
             if len(iterable) < 20:
                 for e in iterable:
