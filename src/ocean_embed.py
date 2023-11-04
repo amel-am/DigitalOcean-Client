@@ -2,7 +2,7 @@ import disnake
 from typing import Union
 from loguru import logger
 from .ocean_client import DigitalOceanClient
-from .constants import CHOICES
+from .constants import CHOICES, MAX_OPTIONS, PICTURE_URL
 
 
 class DiscordEmbedDropdown(disnake.ui.StringSelect):
@@ -28,7 +28,7 @@ class DiscordEmbedDropdown(disnake.ui.StringSelect):
         if isinstance(index, int):
             self._index = index
         else:
-            logger.warning(f"The given arg {index} is not of type int!")
+            logger.error(f"The given arg {index} is not of type int!")
 
     @property
     def choice(self):
@@ -39,7 +39,7 @@ class DiscordEmbedDropdown(disnake.ui.StringSelect):
         if choice in CHOICES:
             self._choice = choice
         else:
-            logger.warning("The choice is not available!")
+            logger.error("The choice is not available!")
 
     @property
     def embed(self):
@@ -51,11 +51,17 @@ class DiscordEmbedDropdown(disnake.ui.StringSelect):
         await inter.response.edit_message(embed=self._embed)
 
     def _append_option(self, label=None, array: list = None):
-        for i in range(len(array)):
-            self.append_option(
-                disnake.SelectOption(
-                    label=f"{label} {i + 1}: {array[i]['name']}", value=str(i))
-            )
+        if not self.options:
+            length = len(array)
+            if length > MAX_OPTIONS:
+                num = MAX_OPTIONS
+            else:
+                num = length
+            for i in range(num):
+                self.append_option(
+                    disnake.SelectOption(
+                        label=f"{label} {i + 1}: {array[i]['name']}", value=str(i))
+                )
 
     def _add_description(self, k: str, v: str, n: int = 1, marks: str = None):
         lines = "\n" * n
@@ -71,7 +77,7 @@ class DiscordEmbedDropdown(disnake.ui.StringSelect):
             color=disnake.Color.blue()
         )
         self._embed.set_image(
-            "https://doimages.nyc3.digitaloceanspaces.com/Droplet,Social,Blog,Email.png")
+            PICTURE_URL)
         self._embed.set_footer(text=self._ocean_client._ratelimit_result)
         self._embed.timestamp = self._ocean_client._ratelimit_time
 
