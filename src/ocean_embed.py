@@ -86,7 +86,7 @@ class DiscordEmbedDropdown(disnake.ui.StringSelect):
             if len(iterable) < 20:
                 for e in iterable:
                     if isinstance(e, dict):
-                        value = self._unpack(e, condition, value)
+                        value = self._unpack_request(e, condition, value)
                     else:
                         value += f"{e}\n"
         else:
@@ -94,7 +94,7 @@ class DiscordEmbedDropdown(disnake.ui.StringSelect):
                 if isinstance(v, list):
                     if v and len(v) < 20:
                         value += f"***{k}***\n"
-                    value = self._unpack(v, condition, value)
+                    value = self._unpack_request(v, condition, value)
                 else:
                     # If key in condition dict use the value to append it to string.
                     value += f"{k}:{v}" + condition.get(k, '\n')
@@ -107,7 +107,7 @@ class DiscordEmbedDropdown(disnake.ui.StringSelect):
             if k == "email":
                 continue
             elif k == "team":
-                value = self._unpack(v)
+                value = self._unpack_request(v)
                 self._embed.add_field(k, value)
             else:
                 self._add_description(k, v)
@@ -120,16 +120,16 @@ class DiscordEmbedDropdown(disnake.ui.StringSelect):
         for k, v in droplets_info[self._index].items():
             match k:
                 case "networks":
-                    value = self._unpack(v, {"type": "\n\n"})
+                    value = self._unpack_request(v, {"type": "\n\n"})
                     self._embed.add_field(name=k, value=value, inline=False)
                 case "features":
-                    value = self._unpack(v)
+                    value = self._unpack_request(v)
                     self._embed.add_field(name=k, value=value, inline=False)
                 case "image":
-                    value = self._unpack(v)
+                    value = self._unpack_request(v)
                     self._embed.add_field(name=k, value=value, inline=False)
                 case "region":
-                    value = self._unpack(v)
+                    value = self._unpack_request(v)
                     self._embed.add_field(name=k, value=value, inline=False)
                 case _:
                     if not isinstance(v, (list, dict)):
